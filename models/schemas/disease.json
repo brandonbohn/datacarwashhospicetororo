@@ -1,0 +1,252 @@
+{
+  "_description": "Disease Model - Track diagnoses and medical conditions",
+  "_version": "1.0",
+  "_date_created": "2025-01-15",
+  
+  "disease_id": "uuid-unique-identifier",
+  "patient_id": "uuid-foreign-key-to-person",
+  "medical_record_id": "uuid-foreign-key-to-medical-record",
+  "encounter_id": "uuid-foreign-key-to-encounter",
+  
+  "disease_category": "cancer",
+  "_disease_category_options": [
+    "cancer",
+    "infectious_disease",
+    "chronic_disease",
+    "cardiovascular",
+    "respiratory",
+    "gastrointestinal",
+    "neurological",
+    "endocrine",
+    "renal",
+    "hematological",
+    "mental_health",
+    "other"
+  ],
+  
+  "disease_name": "lung_cancer",
+  "disease_name_display": "Lung Cancer (Adenocarcinoma)",
+  "icd10_code": "C34.9",
+  "icd10_description": "Malignant neoplasm of bronchus and lung, unspecified",
+  
+  "disease_details": {
+    "_description": "FLEXIBLE - changes based on disease_category",
+    
+    "_if_cancer": {
+      "cancer_type": "lung_cancer",
+      "_cancer_type_options": [
+        "lung_cancer",
+        "breast_cancer",
+        "cervical_cancer",
+        "prostate_cancer",
+        "kaposi_sarcoma",
+        "esophageal_cancer",
+        "stomach_cancer",
+        "colorectal_cancer",
+        "liver_cancer",
+        "lymphoma",
+        "leukemia",
+        "other"
+      ],
+      "primary_site": "upper lobe, right lung",
+      "primary_site_laterality": "right",
+      "_laterality_options": ["left", "right", "bilateral", "midline", "not_applicable"],
+      "histology": "adenocarcinoma",
+      "_histology_options": [
+        "adenocarcinoma",
+        "squamous_cell_carcinoma",
+        "small_cell_carcinoma",
+        "large_cell_carcinoma",
+        "carcinoma_unspecified",
+        "sarcoma",
+        "lymphoma",
+        "other"
+      ],
+      "grade": "poorly_differentiated",
+      "_grade_options": ["well_differentiated", "moderately_differentiated", "poorly_differentiated", "undifferentiated", "unknown"],
+      "stage": "stage_4",
+      "_stage_options": ["stage_1", "stage_2", "stage_3", "stage_4", "unknown"],
+      "tnm_classification": {
+        "t": "T3",
+        "n": "N2",
+        "m": "M1"
+      },
+      "metastasis": true,
+      "metastasis_sites": ["liver", "bones_ribs", "bones_spine"],
+      "molecular_markers": {
+        "egfr_status": "negative",
+        "alk_status": "unknown",
+        "pd_l1_expression": "unknown"
+      },
+      "prior_treatments": [
+        {
+          "treatment_type": "chemotherapy",
+          "regimen": "carboplatin_paclitaxel",
+          "start_date": "2024-07-15",
+          "end_date": "2024-10-15",
+          "cycles_completed": 4,
+          "response": "stable_disease",
+          "reason_stopped": "disease_progression"
+        }
+      ]
+    },
+    
+    "_if_hiv": {
+      "hiv_type": "hiv_1",
+      "diagnosis_method": "rapid_test_confirmed_elisa",
+      "who_stage": "3",
+      "_who_stage_options": ["1", "2", "3", "4"],
+      "cd4_count": 350,
+      "cd4_date": "2025-01-10",
+      "viral_load": "undetectable",
+      "viral_load_date": "2025-01-10",
+      "on_art": true,
+      "art_regimen": "TDF_3TC_DTG",
+      "art_start_date": "2020-06-15",
+      "adherence": "good",
+      "opportunistic_infections": ["oral_candidiasis"],
+      "art_side_effects": []
+    },
+    
+    "_if_diabetes": {
+      "diabetes_type": "type_2",
+      "_diabetes_type_options": ["type_1", "type_2", "gestational", "other"],
+      "duration_years": 10,
+      "hba1c": 7.5,
+      "hba1c_date": "2025-01-10",
+      "fasting_glucose": 8.5,
+      "current_treatment": ["metformin", "diet_modification"],
+      "complications": ["peripheral_neuropathy"],
+      "target_hba1c": 7.0,
+      "last_eye_exam": "2024-06-15",
+      "last_foot_exam": "2025-01-15"
+    },
+    
+    "_if_hypertension": {
+      "average_systolic": 145,
+      "average_diastolic": 90,
+      "target_bp": "less than 140/90",
+      "current_medications": ["amlodipine_5mg", "hydrochlorothiazide_25mg"],
+      "complications": [],
+      "last_ecg_date": "2024-12-01",
+      "last_echocardiogram": null
+    },
+    
+    "_if_tuberculosis": {
+      "tb_type": "pulmonary",
+      "_tb_type_options": ["pulmonary", "extrapulmonary", "both"],
+      "diagnosis_method": "sputum_smear_positive",
+      "drug_sensitivity": "drug_sensitive",
+      "_drug_sensitivity_options": ["drug_sensitive", "mdr_tb", "xdr_tb", "unknown"],
+      "treatment_category": "category_1",
+      "treatment_start_date": "2025-01-01",
+      "treatment_duration_months": 6,
+      "current_phase": "intensive",
+      "_phase_options": ["intensive", "continuation", "completed"],
+      "hiv_coinfection": false,
+      "dot_provider": "chw_james_okello"
+    }
+  },
+  
+  "diagnosis_date": "2024-06-15",
+  "diagnosis_method": "ct_biopsy",
+  "_diagnosis_method_options": [
+    "clinical",
+    "laboratory",
+    "imaging",
+    "biopsy",
+    "ct_biopsy",
+    "endoscopy",
+    "surgery",
+    "autopsy",
+    "other"
+  ],
+  "diagnosed_by": "staff-uuid-dr-sarah",
+  "diagnosing_facility": "tororo regional hospital",
+  
+  "onset_date": "2024-04-01",
+  "_onset_date_note": "When symptoms first appeared or condition began",
+  
+  "status": "active",
+  "_status_options": [
+    "active",
+    "in_remission",
+    "resolved",
+    "chronic_stable",
+    "chronic_worsening",
+    "terminal",
+    "inactive",
+    "unknown"
+  ],
+  
+  "severity": "severe",
+  "_severity_options": ["mild", "moderate", "severe", "critical"],
+  
+  "is_primary_diagnosis": true,
+  "is_terminal_diagnosis": true,
+  
+  "prognosis": {
+    "estimated_survival": "3_to_6_months",
+    "_estimated_survival_options": ["days", "weeks", "1_to_3_months", "3_to_6_months", "6_to_12_months", "greater_than_1_year", "unknown"],
+    "prognosis_date": "2024-06-15",
+    "prognostic_factors": ["metastatic_disease", "poor_performance_status", "weight_loss"],
+    "functional_status": {
+      "karnofsky_score": 50,
+      "ecog_status": 3,
+      "pps_score": 40
+    }
+  },
+  
+  "impact_on_daily_living": {
+    "mobility": "bed_chair_bound",
+    "_mobility_options": ["independent", "uses_assistive_device", "needs_assistance", "wheelchair_bound", "bed_chair_bound", "bedbound"],
+    "self_care": "needs_assistance",
+    "_self_care_options": ["independent", "needs_some_help", "needs_assistance", "totally_dependent"],
+    "activities": "unable_to_work",
+    "pain_level_average": 6
+  },
+  
+  "complications": [
+    {
+      "complication": "pathological_fracture",
+      "site": "rib",
+      "date": "2024-11-20",
+      "status": "ongoing"
+    },
+    {
+      "complication": "malignant_pleural_effusion",
+      "date": "2024-12-01",
+      "status": "managed"
+    }
+  ],
+  
+  "related_diseases": [
+    {
+      "disease_id": "uuid-copd",
+      "relationship": "contributing_factor",
+      "_relationship_options": ["contributing_factor", "complication_of", "co_morbidity", "differential_diagnosis"]
+    }
+  ],
+  
+  "notes": "rapidly progressive disease, patient declining further curative treatment, transitioned to comfort care only",
+  
+  "verification_status": "confirmed",
+  "_verification_status_options": ["suspected", "provisional", "confirmed", "ruled_out", "differential"],
+  
+  "resolution_date": null,
+  "resolution_reason": null,
+  "_resolution_reason_options": ["cured", "in_remission", "death", "transferred_care", "other"],
+  
+  "created_at": "2024-06-15T10:30:00Z",
+  "created_by": "staff-uuid",
+  "updated_at": "2025-01-15T14:20:00Z",
+  "updated_by": "staff-uuid",
+  "is_deleted": false,
+  
+  "metadata": {
+    "source": "medical_record",
+    "version": "1.0",
+    "confirmed_by_pathology": true,
+    "pathology_report_id": "uuid-path-report"
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "_description": "Supply Model - Inventory management for medications, equipment, consumables, and office supplies",
+  "_version": "1.0",
+  "_date_created": "2025-12-18",
+  
+  "supply_id": "uuid-unique-identifier",
+  
+  "supply_type": "medication",
+  "_supply_type_options": [
+    "medication",
+    "medical_equipment",
+    "medical_consumable",
+    "office_supply",
+    "personal_protective_equipment",
+    "cleaning_supply",
+    "nutrition_supplement",
+    "educational_material",
+    "other"
+  ],
+  
+  "item_name": "morphine sulfate 10mg tablets",
+  "item_code": "MED-MORPH-10MG",
+  "generic_name": "morphine sulfate",
+  "brand_name": "MS Contin",
+  
+  "category": "pain_medication",
+  "_category_options": [
+    "pain_medication",
+    "antibiotic",
+    "antifungal",
+    "antiviral",
+    "chemotherapy",
+    "palliative_medication",
+    "wound_care",
+    "diagnostic_equipment",
+    "patient_care_equipment",
+    "mobility_aid",
+    "consumable_medical",
+    "consumable_office",
+    "ppe",
+    "cleaning",
+    "nutrition",
+    "other"
+  ],
+  
+  "subcategory": "opioid_analgesic",
+  "is_controlled_substance": true,
+  "dea_schedule": "schedule_2",
+  "_dea_schedule_options": ["schedule_1", "schedule_2", "schedule_3", "schedule_4", "schedule_5", "not_controlled"],
+  
+  "inventory": {
+    "quantity_on_hand": 500,
+    "unit": "tablets",
+    "_unit_options": ["tablets", "capsules", "ml", "liters", "grams", "kg", "units", "boxes", "bottles", "vials", "ampules", "syringes", "pieces", "rolls", "pairs", "sets"],
+    "reorder_point": 100,
+    "reorder_quantity": 500,
+    "minimum_stock_level": 50,
+    "maximum_stock_level": 1000,
+    "last_stock_count_date": "2025-12-15",
+    "last_stock_count_by": "uuid-staff-id"
+  },
+  
+  "storage": {
+    "location": "pharmacy_cabinet_a",
+    "_location_options": ["pharmacy", "pharmacy_cabinet_a", "pharmacy_cabinet_b", "pharmacy_fridge", "secure_cabinet", "warehouse", "office", "vehicle", "other"],
+    "storage_requirements": ["keep_locked", "room_temperature"],
+    "_storage_requirement_options": ["refrigerated", "frozen", "room_temperature", "keep_dry", "protect_from_light", "keep_locked", "humidity_controlled"],
+    "shelf_life_months": 24,
+    "requires_cold_chain": false
+  },
+  
+  "procurement": {
+    "supplier_name": "national_medical_stores",
+    "supplier_contact": "+256700123456",
+    "supplier_email": "orders@nms.ug",
+    "supplier_address": "kampala, uganda",
+    "cost_per_unit_ugx": 1500,
+    "last_purchase_date": "2025-11-20",
+    "last_purchase_quantity": 1000,
+    "last_purchase_cost_ugx": 1500000,
+    "lead_time_days": 14,
+    "preferred_vendor": true
+  },
+  
+  "batch_tracking": {
+    "_description": "For medications and items with expiration dates",
+    "batches": [
+      {
+        "batch_number": "LOT2025-001",
+        "manufacture_date": "2024-01-15",
+        "expiration_date": "2026-12-31",
+        "quantity_in_batch": 300,
+        "received_date": "2025-11-20",
+        "received_by": "uuid-staff-id",
+        "status": "in_use",
+        "_status_options": ["in_use", "quarantined", "expired", "recalled", "depleted"]
+      },
+      {
+        "batch_number": "LOT2024-008",
+        "manufacture_date": "2023-06-15",
+        "expiration_date": "2025-12-31",
+        "quantity_in_batch": 200,
+        "received_date": "2025-06-10",
+        "received_by": "uuid-staff-id",
+        "status": "in_use"
+      }
+    ]
+  },
+  
+  "transactions": {
+    "_description": "Track all stock movements",
+    "transaction_history": [
+      {
+        "transaction_id": "uuid-transaction",
+        "transaction_type": "received",
+        "_transaction_type_options": ["received", "dispensed", "adjusted", "transferred", "damaged", "expired", "donated", "returned"],
+        "transaction_date": "2025-11-20",
+        "quantity": 1000,
+        "unit": "tablets",
+        "batch_number": "LOT2025-001",
+        "from_location": "supplier",
+        "to_location": "pharmacy_cabinet_a",
+        "performed_by": "uuid-staff-id",
+        "reason": "routine_stock_replenishment",
+        "reference_number": "PO-2025-1120-001",
+        "notes": "received from national medical stores"
+      },
+      {
+        "transaction_id": "uuid-transaction-2",
+        "transaction_type": "dispensed",
+        "transaction_date": "2025-12-15",
+        "quantity": 120,
+        "unit": "tablets",
+        "batch_number": "LOT2024-008",
+        "from_location": "pharmacy_cabinet_a",
+        "to_location": "patient",
+        "patient_id": "uuid-patient-id",
+        "encounter_id": "uuid-encounter-id",
+        "treatment_id": "uuid-treatment-id",
+        "performed_by": "uuid-staff-id",
+        "reason": "patient_prescription",
+        "notes": "10-day supply for john doe"
+      },
+      {
+        "transaction_id": "uuid-transaction-3",
+        "transaction_type": "adjusted",
+        "transaction_date": "2025-12-10",
+        "quantity": -20,
+        "unit": "tablets",
+        "batch_number": "LOT2024-008",
+        "performed_by": "uuid-staff-id",
+        "reason": "physical_count_discrepancy",
+        "notes": "stock count revealed 20 tablets missing, likely data entry error"
+      },
+      {
+        "transaction_id": "uuid-transaction-4",
+        "transaction_type": "expired",
+        "transaction_date": "2025-12-01",
+        "quantity": 50,
+        "unit": "tablets",
+        "batch_number": "LOT2023-005",
+        "performed_by": "uuid-staff-id",
+        "reason": "expiration_date_reached",
+        "notes": "batch expired, disposed per protocol"
+      }
+    ]
+  },
+  
+  "item_details": {
+    "_description": "Additional details specific to supply_type",
+    
+    "_if_medication": {
+      "dosage_strength": "10mg",
+      "dosage_form": "tablet",
+      "_dosage_form_options": ["tablet", "capsule", "liquid", "injection", "cream", "patch", "suppository", "inhaler", "drops"],
+      "route_of_administration": "oral",
+      "_route_options": ["oral", "sublingual", "rectal", "subcutaneous", "intravenous", "intramuscular", "topical", "transdermal", "inhalation"],
+      "therapeutic_class": "opioid_analgesic",
+      "indications": ["severe_pain", "cancer_pain", "chronic_pain"],
+      "contraindications": ["respiratory_depression", "paralytic_ileus"],
+      "side_effects": ["constipation", "drowsiness", "nausea", "respiratory_depression"],
+      "drug_interactions": ["benzodiazepines", "other_cns_depressants"],
+      "requires_prescription": true,
+      "formulary_status": "essential_medicine"
+    },
+    
+    "_if_equipment": {
+      "equipment_type": "wheelchair",
+      "_equipment_type_options": ["wheelchair", "walker", "crutches", "oxygen_concentrator", "hospital_bed", "commode", "pressure_mattress", "nebulizer", "sphygmomanometer", "thermometer", "glucometer"],
+      "model_number": "WC-500",
+      "serial_number_tracked": true,
+      "requires_maintenance": true,
+      "maintenance_schedule_days": 90,
+      "last_maintenance_date": "2025-09-15",
+      "warranty_expiration": "2026-11-20",
+      "condition": "good",
+      "_condition_options": ["new", "excellent", "good", "fair", "poor", "needs_repair", "beyond_repair"],
+      "is_loanable_to_patients": true,
+      "currently_on_loan": false
+    },
+    
+    "_if_consumable": {
+      "consumable_type": "bandage",
+      "size": "medium",
+      "sterile": true,
+      "single_use": true,
+      "pieces_per_package": 10
+    },
+    
+    "_if_ppe": {
+      "ppe_type": "gloves",
+      "_ppe_type_options": ["gloves", "masks", "gowns", "face_shields", "aprons", "shoe_covers"],
+      "size": "medium",
+      "material": "nitrile",
+      "sterile": false,
+      "pairs_per_box": 100
+    }
+  },
+  
+  "alerts": {
+    "low_stock_alert": true,
+    "_low_stock_alert_note": "quantity_on_hand <= reorder_point",
+    "expiring_soon_alert": false,
+    "_expiring_soon_alert_note": "any batch expires within 3 months",
+    "expired_stock_alert": false,
+    "_expired_stock_alert_note": "any batch past expiration_date",
+    "out_of_stock_alert": false,
+    "_out_of_stock_alert_note": "quantity_on_hand = 0"
+  },
+  
+  "compliance": {
+    "requires_documentation": true,
+    "requires_signature": true,
+    "regulatory_body": "national_drug_authority",
+    "_regulatory_body_options": ["national_drug_authority", "ministry_of_health", "none"],
+    "license_required": true,
+    "license_number": "NDA-12345",
+    "license_expiration": "2026-12-31",
+    "audit_trail_required": true
+  },
+  
+  "usage_stats": {
+    "average_monthly_usage": 350,
+    "usage_trend": "stable",
+    "_usage_trend_options": ["increasing", "stable", "decreasing"],
+    "peak_usage_month": "november",
+    "total_dispensed_ytd": 4200,
+    "total_received_ytd": 5000,
+    "number_of_patients_using": 15
+  },
+  
+  "linked_records": {
+    "treatment_ids": ["uuid-treatment-1", "uuid-treatment-2"],
+    "_treatment_note": "Links to Treatment records where this supply was dispensed to patients",
+    "purchase_order_ids": ["PO-2025-1120-001", "PO-2025-0615-003"],
+    "invoice_ids": ["INV-2025-1120-001"]
+  },
+  
+  "status": "active",
+  "_status_options": ["active", "discontinued", "out_of_stock", "backordered", "obsolete"],
+  
+  "notes": "primary pain medication for cancer patients, requires careful stock monitoring due to high demand and controlled substance status",
+  
+  "created_date": "2025-01-15",
+  "created_by": "uuid-staff-id",
+  "last_updated_date": "2025-12-15",
+  "last_updated_by": "uuid-staff-id"
+}

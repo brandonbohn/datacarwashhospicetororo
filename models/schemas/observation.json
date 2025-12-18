@@ -1,0 +1,241 @@
+{
+  "_description": "Observation Model - Track changing clinical data over time (symptoms, vitals, functional assessments, lab values)",
+  "_version": "1.0",
+  "_date_created": "2025-01-15",
+  
+  "observation_id": "uuid-unique-identifier",
+  "patient_id": "uuid-foreign-key-to-person",
+  "encounter_id": "uuid-foreign-key-to-encounter",
+  
+  "observation_type": "symptom",
+  "_observation_type_options": [
+    "symptom",
+    "vital_sign",
+    "physical_measurement",
+    "functional_assessment",
+    "pain_assessment",
+    "lab_value",
+    "assessment_score",
+    "patient_reported_outcome"
+  ],
+  
+  "observation_category": "respiratory",
+  "_observation_category_options": [
+    "pain",
+    "respiratory",
+    "gastrointestinal",
+    "neurological",
+    "psychological",
+    "skin_wound",
+    "cardiovascular",
+    "genitourinary",
+    "general",
+    "functional",
+    "social"
+  ],
+  
+  "observation_name": "dyspnoea",
+  "observation_display_name": "Shortness of Breath (Dyspnea)",
+  
+  "value": {
+    "_description": "FLEXIBLE - structure changes based on observation_type",
+    
+    "_if_symptom": {
+      "severity": "moderate",
+      "_severity_options": ["none", "mild", "moderate", "severe"],
+      "severity_scale": 2,
+      "_severity_scale_note": "0=none, 1=mild, 2=moderate, 3=severe",
+      "numeric_scale": null,
+      "_numeric_scale_note": "For symptoms using 0-10 scale",
+      "location": "chest",
+      "quality": ["sharp", "stabbing"],
+      "timing": "constant",
+      "_timing_options": ["constant", "intermittent", "episodic", "worse_at_night", "worse_during_day"],
+      "duration": "ongoing",
+      "onset": "gradual",
+      "_onset_options": ["sudden", "gradual", "progressive"],
+      "aggravating_factors": ["exertion", "lying_flat"],
+      "relieving_factors": ["rest", "sitting_upright", "oxygen"],
+      "associated_symptoms": ["cough", "chest_pain"],
+      "impact_on_function": "limits_walking",
+      "comment": "worse with minimal exertion, improved when sitting upright"
+    },
+    
+    "_if_vital_sign": {
+      "blood_pressure_systolic": 130,
+      "blood_pressure_diastolic": 80,
+      "blood_pressure_unit": "mmHg",
+      "heart_rate": 88,
+      "heart_rate_unit": "bpm",
+      "respiratory_rate": 22,
+      "respiratory_rate_unit": "breaths_per_minute",
+      "temperature": 37.2,
+      "temperature_unit": "celsius",
+      "oxygen_saturation": 92,
+      "oxygen_saturation_unit": "percent",
+      "oxygen_delivery": "room_air",
+      "_oxygen_delivery_options": ["room_air", "nasal_cannula", "simple_mask", "non_rebreather", "oxygen_concentrator"],
+      "oxygen_flow_rate": null,
+      "position": "sitting",
+      "_position_options": ["supine", "sitting", "standing", "lying_left", "lying_right"]
+    },
+    
+    "_if_physical_measurement": {
+      "weight_kg": 55,
+      "height_cm": 170,
+      "bmi": 19.0,
+      "bmi_category": "underweight",
+      "_bmi_category_options": ["underweight", "normal", "overweight", "obese"],
+      "weight_change_kg": -5,
+      "weight_change_period": "1_month",
+      "muac_cm": 20,
+      "_muac_note": "Mid-upper arm circumference, malnutrition indicator",
+      "head_circumference_cm": null,
+      "abdominal_girth_cm": null
+    },
+    
+    "_if_pain_assessment": {
+      "pain_score": 6,
+      "_pain_score_note": "0-10 scale, 0=no pain, 10=worst pain",
+      "pain_scale_used": "numeric_rating_scale",
+      "_pain_scale_options": ["numeric_rating_scale", "visual_analog_scale", "faces_scale", "verbal_descriptor"],
+      "location": ["chest", "back"],
+      "quality": ["sharp", "constant"],
+      "radiation": "to_left_arm",
+      "intensity_at_rest": 4,
+      "intensity_with_movement": 8,
+      "breakthrough_pain": true,
+      "pain_interference": {
+        "sleep": "moderate",
+        "mood": "severe",
+        "activity": "severe",
+        "relationships": "moderate"
+      }
+    },
+    
+    "_if_functional_assessment": {
+      "assessment_tool": "karnofsky_performance_status",
+      "_assessment_tool_options": [
+        "karnofsky_performance_status",
+        "ecog_performance_status",
+        "palliative_performance_scale",
+        "barthel_index",
+        "iadl_scale",
+        "mmse"
+      ],
+      "score": 50,
+      "score_interpretation": "requires considerable assistance and frequent medical care",
+      "ability_to_work": "unable",
+      "ability_self_care": "needs_assistance",
+      "activity_level": "mainly_in_bed_or_chair",
+      "evidence_of_disease": "obvious",
+      "oral_intake": "reduced"
+    },
+    
+    "_if_lab_value": {
+      "test_name": "hemoglobin",
+      "result_value": 9.5,
+      "result_unit": "g/dL",
+      "reference_range_low": 13,
+      "reference_range_high": 17,
+      "reference_range_text": "13-17 g/dL",
+      "flag": "low",
+      "_flag_options": ["low", "normal", "high", "critical_low", "critical_high"],
+      "test_method": "automated_analyzer",
+      "specimen_type": "venous_blood",
+      "collection_date": "2025-01-14",
+      "result_date": "2025-01-15"
+    },
+    
+    "_if_assessment_score": {
+      "assessment_name": "edmonton_symptom_assessment_scale",
+      "total_score": 45,
+      "max_score": 90,
+      "score_interpretation": "moderate_to_severe_symptom_burden",
+      "subscales": {
+        "pain": 7,
+        "tiredness": 8,
+        "drowsiness": 5,
+        "nausea": 3,
+        "lack_of_appetite": 6,
+        "shortness_of_breath": 6,
+        "depression": 5,
+        "anxiety": 3,
+        "wellbeing": 2
+      }
+    }
+  },
+  
+  "recorded_datetime": "2025-01-15T10:30:00Z",
+  "recorded_by": "staff-uuid",
+  "recorded_by_role": "nurse",
+  
+  "method": "patient_report",
+  "_method_options": [
+    "patient_report",
+    "direct_observation",
+    "measurement",
+    "calculation",
+    "family_report",
+    "caregiver_report",
+    "medical_device"
+  ],
+  
+  "reliability": "reliable",
+  "_reliability_options": ["reliable", "questionable", "unreliable"],
+  
+  "interpretation": {
+    "clinical_significance": "significant",
+    "_clinical_significance_options": ["not_significant", "monitor", "significant", "critical"],
+    "trend": "worsening",
+    "_trend_options": ["improving", "stable", "worsening", "fluctuating", "first_assessment"],
+    "action_needed": "medication_adjustment",
+    "_action_needed_options": ["none", "monitor_closely", "medication_adjustment", "further_assessment", "urgent_intervention"],
+    "notes": "dyspnea worsening despite oxygen therapy, consider increasing dexamethasone"
+  },
+  
+  "comparison": {
+    "previous_value": "mild",
+    "previous_date": "2025-01-12",
+    "change": "worsening",
+    "change_magnitude": "one_level",
+    "time_between_assessments_hours": 72
+  },
+  
+  "related_observations": [
+    {
+      "observation_id": "uuid-oxygen-sat",
+      "observation_name": "oxygen_saturation",
+      "relationship": "correlates_with"
+    }
+  ],
+  
+  "interventions_taken": [
+    {
+      "intervention": "oxygen_started",
+      "details": "2L nasal cannula",
+      "response": "slight_improvement"
+    }
+  ],
+  
+  "tags": ["worsening", "requires_follow_up", "medication_review_needed"],
+  
+  "is_abnormal": true,
+  "is_critical": false,
+  "requires_notification": true,
+  "notification_sent": true,
+  "notified_staff_id": "staff-uuid-doctor",
+  
+  "created_at": "2025-01-15T10:30:00Z",
+  "created_by": "staff-uuid",
+  "updated_at": "2025-01-15T10:30:00Z",
+  "updated_by": "staff-uuid",
+  "is_deleted": false,
+  
+  "metadata": {
+    "source": "encounter",
+    "device_id": null,
+    "version": "1.0",
+    "quality_flag": "good"
+  }
+}

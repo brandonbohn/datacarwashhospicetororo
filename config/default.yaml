@@ -1,0 +1,32 @@
+# Default configuration for Data Car Wash
+
+# Normalization settings
+normalization:
+  missing_value_strategy: keep  # Options: keep, drop_rows, drop_columns
+  missing_threshold: 0.5  # For drop_columns strategy
+  date_columns: []  # List of columns to treat as dates
+  custom_rules: {}
+    # Example:
+    # column_name:
+    #   lowercase: true
+    #   value_map:
+    #     old_value: new_value
+
+# Deduplication settings
+deduplication:
+  strategy: all_columns  # Options: all_columns, key_columns
+  key_columns: []  # Columns to use for key_columns strategy
+  keep: first  # Options: first, last, false
+
+# Organization settings
+organization:
+  sort:
+    columns: []  # List of columns to sort by
+    ascending: true
+  grouping:
+    column: null  # Column to group data by (creates separate files)
+  filters: []
+    # Example:
+    # - column: status
+    #   operator: equals  # Options: equals, not_equals, contains, greater_than, less_than
+    #   value: active

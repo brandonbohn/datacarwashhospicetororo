@@ -1,0 +1,404 @@
+{
+  "_description": "Maps Kobo form fields to JSON data models",
+  "_version": "1.0",
+  "_date_created": "2025-12-18",
+  
+  "forms": {
+    "patient_assessment": {
+      "kobo_form_name": "Patient Assessment Form",
+      "generates_models": ["Person", "Encounter", "Observation", "Treatment", "Medical_Record"],
+      
+      "field_mappings": {
+        "patient_info": {
+          "target_model": "Person",
+          "person_type": "patient",
+          "fields": {
+            "reg_number": "role_data.registration_number",
+            "patient_name": "name",
+            "age": "age",
+            "sex": "sex",
+            "village": "address.village",
+            "diagnosis": "→ CREATE Disease model"
+          }
+        },
+        
+        "encounter_wrapper": {
+          "target_model": "Encounter",
+          "encounter_type": "clinical_assessment",
+          "fields": {
+            "assessment_date": "encounter_date",
+            "ALL_FORM_DATA": "form_data (store entire Kobo submission as nested JSON)"
+          }
+        },
+        
+        "clinical_assessment": {
+          "target_model": "Observation (multiple)",
+          "observation_type": "physical_exam_finding",
+          "fields": {
+            "general_assessment": {
+              "model": "Observation",
+              "observation_name": "general_assessment",
+              "value.finding": "kobo_value"
+            },
+            "cachexia": {
+              "model": "Observation",
+              "observation_name": "cachexia",
+              "value.present": "kobo_value"
+            },
+            "jaundice": {
+              "model": "Observation",
+              "observation_name": "jaundice",
+              "value.present": "kobo_value"
+            },
+            "pallor": {
+              "model": "Observation",
+              "observation_name": "pallor",
+              "value.present": "kobo_value"
+            },
+            "body_wasting": {
+              "model": "Observation",
+              "observation_name": "body_wasting",
+              "value.present": "kobo_value"
+            },
+            "clinical_notes_physical": {
+              "model": "Medical_Record",
+              "record_type": "physical_exam",
+              "content.notes": "kobo_value"
+            }
+          }
+        },
+        
+        "pain_assessment_repeat": {
+          "target_model": "Observation (one per pain site)",
+          "observation_type": "pain_assessment",
+          "is_repeating": true,
+          "fields": {
+            "pain_site": "value.pain_location",
+            "pain_type": "value.pain_quality",
+            "pain_duration": "value.duration",
+            "pain_score": "value.pain_score",
+            "effect": "value.pain_characteristics",
+            "relieving": "value.relieving_factors",
+            "aggravating": "value.aggravating_factors",
+            "pain_note_physician": "comment"
+          }
+        },
+        
+        "vitals": {
+          "target_model": "Observation",
+          "observation_type": "vital_sign",
+          "fields": {
+            "pulse_rate": "value.heart_rate",
+            "bp_systol": "value.blood_pressure_systolic",
+            "bp_diastol": "value.blood_pressure_diastolic",
+            "temperature": "value.temperature",
+            "resp_rate": "value.respiratory_rate",
+            "loc": "value.level_of_consciousness",
+            "orientation": "value.orientation_status",
+            "vital_note_physician": "comment"
+          }
+        },
+        
+        "medication_repeat": {
+          "target_model": "Treatment (one per medication)",
+          "treatment_type": "medication",
+          "is_repeating": true,
+          "fields": {
+            "med_name": "treatment_name",
+            "indication": "details.indication",
+            "dose": "details.dosage",
+            "date_completed": "end_date",
+            "note_physician": "notes"
+          }
+        },
+        
+        "signoff": {
+          "target_model": "Encounter (update)",
+          "fields": {
+            "summary": "assessment_summary",
+            "next_review": "next_visit_date",
+            "seen_by": "staff_id (lookup staff by name)",
+            "signature": "form_data.signature"
+          }
+        }
+      }
+    },
+    
+    "comprehensive_intake": {
+      "kobo_form_name": "Comprehensive Patient Intake",
+      "generates_models": ["Person", "Encounter", "Disease", "Treatment", "Medical_Record", "Observation"],
+      
+      "field_mappings": {
+        "patient_registration": {
+          "target_model": "Person",
+          "person_type": "patient",
+          "fields": {
+            "patient_reg_num": "role_data.registration_number",
+            "patient_gender": "sex",
+            "patient_age": "age",
+            "income_range": "role_data.socioeconomic_data.income_range",
+            "main_income": "role_data.socioeconomic_data.main_income_source",
+            "education_completed": "role_data.education_level"
+          }
+        },
+        
+        "family_tree_repeat": {
+          "target_model": "Person (one per family member) + Relationships",
+          "person_type": "family_member",
+          "is_repeating": true,
+          "fields": {
+            "member_name": "name",
+            "member_relationship": "→ ADD to patient's relationships array",
+            "member_Age": "age",
+            "member_Gender": "sex",
+            "alive": "role_data.vital_status",
+            "member_Occupation": "role_data.occupation",
+            "member_KnownMedicalConditions": "→ CREATE Disease models"
+          }
+        },
+        
+        "medical_history": {
+          "target_model": "Medical_Record + Disease (multiple)",
+          "record_type": "patient_history",
+          "fields": {
+            "diabetes": "→ CREATE Disease if 'yes'",
+            "heart_disease": "→ CREATE Disease if 'yes'",
+            "arthritis": "→ CREATE Disease if 'yes'",
+            "sickle_cell": "→ CREATE Disease if 'yes'",
+            "std": "→ CREATE Disease if 'yes'",
+            "cancer": "→ CREATE Disease if 'yes'",
+            "mental_illness": "→ CREATE Disease if 'yes'",
+            "tuberculosis": "→ CREATE Disease if 'yes'",
+            "hepatitis": "→ CREATE Disease if 'yes'",
+            "blood_transfusions": "content.past_medical_history.transfusions",
+            "other_medical": "content.past_medical_history.other"
+          }
+        },
+        
+        "medication_history": {
+          "target_model": "Medical_Record",
+          "record_type": "medication_history",
+          "fields": {
+            "traditional_medicine": "content.traditional_medicine_use",
+            "opiates": "content.prior_opiate_exposure",
+            "drug_reactions": "content.adverse_drug_reactions"
+          }
+        },
+        
+        "treatment_history": {
+          "target_model": "Disease (update cancer model)",
+          "fields": {
+            "chemotherapy": "disease_details.prior_treatments (add chemotherapy)",
+            "radiotherapy": "disease_details.prior_treatments (add radiotherapy)",
+            "receiving_immunotherapy": "disease_details.current_immunotherapy",
+            "default_reasons": "disease_details.treatment_adherence_issues"
+          }
+        },
+        
+        "aids_defining_illnesses": {
+          "target_model": "Disease (multiple)",
+          "disease_category": "infectious_disease",
+          "fields": {
+            "aids_conditions": "→ CREATE Disease model for each selected condition"
+          }
+        },
+        
+        "lab_tests_repeat": {
+          "target_model": "Medical_Record (one per test)",
+          "record_type": "lab_result",
+          "is_repeating": true,
+          "fields": {
+            "test_name_value": "content.test_name",
+            "test_date": "record_date",
+            "test_comments": "content.interpretation"
+          }
+        },
+        
+        "living_conditions": {
+          "target_model": "Medical_Record",
+          "record_type": "social_history",
+          "fields": {
+            "housing_quality": "content.social_history.housing_quality",
+            "bedding_quality": "content.social_history.bedding_status",
+            "utensils_status": "content.social_history.utensils_status",
+            "cleanliness": "content.social_history.cleanliness_level"
+          }
+        },
+        
+        "social_support": {
+          "target_model": "Medical_Record (update social_history)",
+          "fields": {
+            "enough_support": "content.social_history.adequate_support",
+            "spiritual_support": "content.social_history.spiritual_support_available",
+            "estimated_social_class": "content.social_history.estimated_social_class"
+          }
+        },
+        
+        "spiritual_assessment": {
+          "target_model": "Medical_Record",
+          "record_type": "spiritual_assessment",
+          "fields": {
+            "faith_belief": "content.faith_tradition",
+            "fear_related": "content.spiritual_concerns.fear_related_to_faith",
+            "spiritual_pain_illness": "content.spiritual_concerns.illness_affecting_spirituality",
+            "relationship_illness": "content.spiritual_concerns.illness_affecting_relationships",
+            "want_prayer": "content.prayer_requested",
+            "who_to_pray": "content.preferred_prayer_person"
+          }
+        },
+        
+        "relationship_impact": {
+          "target_model": "Medical_Record (update spiritual_assessment or social_history)",
+          "fields": {
+            "illness_affected_relationships": "content.relationship_impact.general",
+            "illness_affected_intimacy": "content.relationship_impact.intimacy"
+          }
+        },
+        
+        "understanding_expectations": {
+          "target_model": "Medical_Record",
+          "record_type": "patient_expectations",
+          "fields": {
+            "patient_understanding": "content.illness_understanding",
+            "patient_prognosis": "content.prognosis_understanding",
+            "patient_most_troubles": "content.primary_concerns",
+            "patient_expectations": "content.patient_expectations",
+            "family_expectations": "content.family_expectations"
+          }
+        }
+      }
+    },
+    
+    "medicine_stock": {
+      "kobo_form_name": "Medicine Stock Distribution",
+      "generates_models": ["Treatment", "Observation"],
+      
+      "field_mappings": {
+        "stock_entry": {
+          "target_model": "Treatment",
+          "treatment_type": "medication",
+          "fields": {
+            "category": "treatment_category",
+            "medicine_name": "treatment_name",
+            "quantity": "details.quantity_dispensed",
+            "dosage": "details.dosage",
+            "staff": "dispensed_by_staff_id (lookup)",
+            "patient_name": "patient_id (lookup)",
+            "date_given": "start_date"
+          }
+        }
+      }
+    },
+    
+    "visit_tracking": {
+      "kobo_form_name": "Visit Tracking Form",
+      "generates_models": ["Encounter"],
+      
+      "field_mappings": {
+        "visit_info": {
+          "target_model": "Encounter",
+          "encounter_type": "follow_up_visit",
+          "fields": {
+            "visit_date": "encounter_date",
+            "visit_location": "location_details",
+            "staff_name": "staff_id (lookup)"
+          }
+        },
+        
+        "patient_followup_repeat": {
+          "target_model": "Encounter (one per patient)",
+          "is_repeating": true,
+          "fields": {
+            "registration_num": "patient_id (lookup by reg_num)",
+            "patient_name": "→ verify matches",
+            "patient_age": "→ verify matches",
+            "patient_sex": "→ verify matches",
+            "patient_village": "→ verify matches",
+            "visit_type": "encounter_type",
+            "clinical_status": "clinical_findings",
+            "medication_comments": "form_data.medication_notes",
+            "next_visit": "next_visit_date"
+          }
+        }
+      }
+    }
+  },
+  
+  "normalization_rules": {
+    "person_matching": {
+      "priority_fields": ["registration_number", "name+age+sex", "name+village"],
+      "duplicate_detection": "check registration_number first, then fuzzy match on name+demographics",
+      "create_new_if": "no match found with confidence > 85%"
+    },
+    
+    "encounter_creation": {
+      "always_create": true,
+      "link_to_patient": "required",
+      "store_full_kobo_submission": "form_data field",
+      "generate_encounter_id": "uuid"
+    },
+    
+    "observation_rules": {
+      "one_observation_per_measurement": true,
+      "link_to_encounter": "required",
+      "timestamp": "use encounter_date as observation_date",
+      "repeating_groups": "create one Observation per repeat"
+    },
+    
+    "treatment_rules": {
+      "one_treatment_per_medication": true,
+      "link_to_encounter": "required",
+      "status": "active (default) or completed if date_completed provided"
+    },
+    
+    "disease_rules": {
+      "avoid_duplicates": "check if disease already exists for patient",
+      "update_if_exists": true,
+      "create_if_new": true
+    },
+    
+    "medical_record_rules": {
+      "group_related_content": "combine related history items into one medical_record",
+      "separate_by_type": "different record_type = different medical_record"
+    }
+  },
+  
+  "data_flow": {
+    "step_1": "Read Kobo CSV/Excel export",
+    "step_2": "Identify form type (assessment, intake, visit, stock)",
+    "step_3": "Parse patient identifiers (reg_number, name, demographics)",
+    "step_4": "Check if Person exists (deduplication)",
+    "step_5": "Create or update Person model",
+    "step_6": "Create Encounter model (store full Kobo data in form_data)",
+    "step_7": "Parse repeating groups (medications, pain sites, family members, lab tests)",
+    "step_8": "Create child models (Observation, Treatment, Disease, Medical_Record)",
+    "step_9": "Link all models via foreign keys (patient_id, encounter_id)",
+    "step_10": "Validate all models against schemas",
+    "step_11": "Save as JSON files",
+    "step_12": "Encrypt JSON files into password-protected ZIP"
+  },
+  
+  "validation_checks": {
+    "required_fields": {
+      "Person": ["person_id", "person_type", "name"],
+      "Encounter": ["encounter_id", "patient_id", "encounter_type", "encounter_date"],
+      "Observation": ["observation_id", "patient_id", "observation_type", "observation_date"],
+      "Treatment": ["treatment_id", "patient_id", "treatment_type"],
+      "Disease": ["disease_id", "patient_id", "disease_category"],
+      "Medical_Record": ["record_id", "patient_id", "record_type"]
+    },
+    
+    "foreign_key_integrity": {
+      "all_patient_ids_must_exist": true,
+      "all_encounter_ids_must_exist": true,
+      "orphaned_records_not_allowed": true
+    },
+    
+    "data_types": {
+      "dates": "YYYY-MM-DD format",
+      "times": "HH:MM:SS format",
+      "uuids": "standard UUID4 format",
+      "enums": "must match options in schema"
+    }
+  }
+}

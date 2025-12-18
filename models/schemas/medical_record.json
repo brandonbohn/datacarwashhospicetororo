@@ -1,0 +1,209 @@
+{
+  "_description": "Medical_Record Model - Clinical history and documentation (diagnoses, test results, notes, histories)",
+  "_version": "1.0",
+  "_date_created": "2025-01-15",
+  
+  "record_id": "uuid-unique-identifier",
+  "patient_id": "uuid-foreign-key-to-person",
+  "encounter_id": "uuid-foreign-key-to-encounter",
+  
+  "record_type": "diagnosis",
+  "_record_type_options": [
+    "diagnosis",
+    "clinical_note",
+    "progress_note",
+    "admission_note",
+    "discharge_summary",
+    "death_certificate",
+    "lab_result",
+    "imaging_report",
+    "pathology_report",
+    "patient_history",
+    "family_history",
+    "surgical_history",
+    "medication_history",
+    "social_history",
+    "physical_exam",
+    "consultation_note",
+    "procedure_note"
+  ],
+  
+  "record_date": "2025-01-15",
+  "record_time": "10:30:00",
+  
+  "title": "initial assessment - lung cancer diagnosis",
+  "summary": "45yo male with stage 4 lung adenocarcinoma with liver and bone metastases",
+  
+  "content": {
+    "_description": "FLEXIBLE - changes based on record_type",
+    
+    "_if_diagnosis": {
+      "disease": "lung_cancer",
+      "icd10_code": "C34.9",
+      "diagnosis_date": "2024-06-15",
+      "diagnosed_by": "dr sarah",
+      "diagnosis_location": "tororo regional hospital",
+      "stage": "stage_4",
+      "severity": "severe",
+      "status": "active",
+      "prognosis": "poor, 3-6 months estimated",
+      "clinical_details": "adenocarcinoma, primary site upper right lobe, metastases to liver and bones"
+    },
+    
+    "_if_clinical_note": {
+      "subjective": "patient reports increasing pain and difficulty breathing",
+      "objective": "vital signs stable, patient pale, tachypneic, chest wall tender",
+      "assessment": "worsening cancer pain and dyspnea",
+      "plan": "increase morphine, add dexamethasone, follow up in 3 days"
+    },
+    
+    "_if_progress_note": {
+      "interval": "3 days since last visit",
+      "progress": "pain improved from 8/10 to 5/10, breathing slightly better",
+      "problems": [
+        {
+          "problem": "cancer_pain",
+          "status": "improving",
+          "action": "continue current management"
+        },
+        {
+          "problem": "dyspnea",
+          "status": "stable",
+          "action": "monitor closely"
+        }
+      ],
+      "current_medications": ["morphine_15mg_q4h", "dexamethasone_4mg_daily"],
+      "plan": "continue current plan, next visit in 1 week"
+    },
+    
+    "_if_lab_result": {
+      "test_name": "complete_blood_count",
+      "test_date": "2025-01-14",
+      "results": {
+        "hemoglobin": {"value": 9.5, "unit": "g/dL", "reference_range": "13-17", "flag": "low"},
+        "wbc": {"value": 6.5, "unit": "10^9/L", "reference_range": "4-11", "flag": "normal"},
+        "platelets": {"value": 150, "unit": "10^9/L", "reference_range": "150-400", "flag": "normal"}
+      },
+      "interpretation": "mild anemia, likely cancer-related",
+      "ordered_by": "staff-uuid",
+      "performed_at": "tororo regional hospital lab"
+    },
+    
+    "_if_imaging_report": {
+      "imaging_type": "chest_ct",
+      "imaging_date": "2024-06-10",
+      "findings": "large mass in right upper lobe measuring 6x5cm, multiple liver lesions consistent with metastases, bone lesions in ribs and spine",
+      "impression": "primary lung malignancy with hepatic and skeletal metastases",
+      "radiologist": "dr john radiologist",
+      "facility": "tororo regional hospital"
+    },
+    
+    "_if_patient_history": {
+      "past_medical_history": [
+        {"condition": "hypertension", "diagnosed": "2015", "status": "controlled"},
+        {"condition": "malaria", "diagnosed": "multiple_episodes", "status": "resolved"}
+      ],
+      "surgical_history": [
+        {"procedure": "appendectomy", "date": "2005", "location": "mbale hospital"}
+      ],
+      "family_history": [
+        {"relationship": "father", "condition": "diabetes", "age_at_diagnosis": 55},
+        {"relationship": "mother", "condition": "hypertension", "age_at_diagnosis": 60}
+      ],
+      "social_history": {
+        "smoking": {"status": "former_smoker", "pack_years": 20, "quit_date": "2020"},
+        "alcohol": {"status": "occasional", "frequency": "social_only"},
+        "occupation": "farmer",
+        "living_situation": "lives_with_spouse_and_children"
+      }
+    },
+    
+    "_if_physical_exam": {
+      "vital_signs": {
+        "blood_pressure": "130/80",
+        "heart_rate": 88,
+        "respiratory_rate": 22,
+        "temperature": 37.2,
+        "oxygen_saturation": 92,
+        "weight_kg": 55,
+        "height_cm": 170,
+        "bmi": 19.0
+      },
+      "general_appearance": "chronically ill appearing, pale, no acute distress at rest",
+      "heent": "normal",
+      "cardiovascular": "regular rate and rhythm, no murmurs",
+      "respiratory": "tachypneic, decreased breath sounds right upper lobe, no wheezes",
+      "abdomen": "soft, non-tender, hepatomegaly present",
+      "extremities": "no edema, full range of motion",
+      "neurological": "alert and oriented x3, no focal deficits",
+      "skin": "pale, no rashes"
+    },
+    
+    "_if_discharge_summary": {
+      "admission_date": "2025-01-15",
+      "discharge_date": "2025-01-20",
+      "length_of_stay_days": 5,
+      "admission_diagnosis": "lung cancer with uncontrolled pain",
+      "discharge_diagnosis": "same, pain now controlled",
+      "hospital_course": "patient admitted for pain management, morphine titrated, education provided to family",
+      "discharge_medications": ["morphine_15mg_q4h", "paracetamol_1g_q6h", "dexamethasone_4mg_daily"],
+      "discharge_condition": "stable, pain controlled",
+      "discharge_instructions": "continue medications as prescribed, follow up at hospice in 3 days",
+      "follow_up": {
+        "provider": "tororo hospice",
+        "date": "2025-01-23",
+        "instructions": "home visit for pain assessment"
+      }
+    },
+    
+    "_if_death_certificate": {
+      "date_of_death": "2025-02-15",
+      "time_of_death": "14:30:00",
+      "place_of_death": "home",
+      "cause_of_death_immediate": "respiratory failure",
+      "cause_of_death_underlying": "metastatic lung adenocarcinoma",
+      "contributing_conditions": ["cachexia", "anemia"],
+      "manner_of_death": "natural",
+      "certified_by": "staff-uuid",
+      "certification_date": "2025-02-15",
+      "family_notified": true,
+      "body_disposition": "released_to_family"
+    }
+  },
+  
+  "documented_by": "staff-uuid",
+  "reviewed_by": "staff-uuid-supervisor",
+  "reviewed_date": "2025-01-16",
+  
+  "is_confidential": false,
+  "confidentiality_level": "standard",
+  "_confidentiality_options": ["standard", "sensitive", "restricted"],
+  
+  "attachments": [
+    {
+      "attachment_id": "uuid",
+      "file_name": "ct_scan_20250110.pdf",
+      "file_type": "pdf",
+      "file_size_kb": 2048,
+      "file_path": "/encrypted/records/patient_123/ct_scan.pdf.encrypted",
+      "is_encrypted": true,
+      "uploaded_by": "staff-uuid",
+      "uploaded_at": "2025-01-15T11:00:00Z"
+    }
+  ],
+  
+  "tags": ["cancer", "palliative_care", "pain_management"],
+  
+  "created_at": "2025-01-15T10:30:00Z",
+  "created_by": "staff-uuid",
+  "updated_at": "2025-01-15T14:20:00Z",
+  "updated_by": "staff-uuid",
+  "is_deleted": false,
+  
+  "metadata": {
+    "source": "manual",
+    "version": "1.0",
+    "signed": true,
+    "signature_datetime": "2025-01-15T14:20:00Z"
+  }
+}

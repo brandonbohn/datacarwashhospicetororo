@@ -1,0 +1,121 @@
+{
+  "_description": "Person Model - Universal model for anyone in the system (patients, staff, caregivers, volunteers, donors, etc.)",
+  "_version": "1.0",
+  "_date_created": "2025-01-15",
+  
+  "person_id": "uuid-unique-identifier",
+  "person_type": "patient",
+  "_person_type_options": ["patient", "caregiver", "staff", "volunteer", "community_health_worker", "donor", "referral_contact"],
+  
+  "name": "john doe",
+  "date_of_birth": "1979-01-15",
+  "age": 45,
+  "sex": "male",
+  "_sex_options": ["male", "female", "other", "prefer_not_to_say"],
+  "marital_status": "married",
+  "_marital_status_options": ["single", "married", "divorced", "widowed", "separated"],
+  
+  "contact": {
+    "phone_primary": "+256700123456",
+    "phone_secondary": "+256750987654",
+    "email": "john@example.com"
+  },
+  
+  "address": {
+    "village": "mukura",
+    "lc1_zone": "zone a",
+    "subcounty": "mukura",
+    "county": "west budama",
+    "district": "tororo",
+    "country": "uganda"
+  },
+  
+  "cultural_info": {
+    "tribe": "japadhola",
+    "language_primary": "japadhola",
+    "religion": "catholic"
+  },
+  
+  "role_data": {
+    "_description": "Flexible object that changes based on person_type",
+    "_if_patient": {
+      "registration_number": "REG-2025-0004",
+      "enrollment_date": "2025-01-15",
+      "status": "active",
+      "status_options": ["active", "inactive", "discharged", "deceased"],
+      "primary_caregiver_id": "uuid-of-caregiver",
+      "discharge_date": null,
+      "death_date": null
+    },
+    "_if_staff": {
+      "employee_id": "EMP-2020-001",
+      "role": "doctor",
+      "role_options": ["doctor", "nurse", "counselor", "pharmacist", "admin", "driver"],
+      "department": "clinical",
+      "license_number": "MD12345",
+      "hire_date": "2020-01-15",
+      "employment_type": "full_time",
+      "certifications": ["palliative_care", "pain_management"],
+      "languages": ["english", "ateso", "luganda"]
+    },
+    "_if_caregiver": {
+      "patient_id": "uuid-of-patient",
+      "relationship": "spouse",
+      "relationship_options": ["spouse", "child", "parent", "sibling", "friend", "other"],
+      "is_primary": true,
+      "lives_with_patient": true,
+      "availability": "full_time"
+    },
+    "_if_volunteer": {
+      "volunteer_since": "2024-06-01",
+      "skills": ["counseling", "translation"],
+      "hours_contributed": 120,
+      "training_completed": ["basic_palliative_care", "grief_counseling"],
+      "background_check_date": "2024-05-15"
+    },
+    "_if_chw": {
+      "chw_id": "CHW-2024-001",
+      "assigned_villages": ["mukura", "osukuru"],
+      "patients_under_care": 15,
+      "supervising_staff_id": "uuid-of-supervisor",
+      "training_date": "2024-03-15"
+    },
+    "_if_donor": {
+      "donor_type": "organization",
+      "donor_type_options": ["individual", "organization", "foundation", "government"],
+      "total_donated_ugx": 5000000,
+      "first_donation_date": "2020-01-15",
+      "last_donation_date": "2025-01-10"
+    }
+  },
+  
+  "relationships": [
+    {
+      "related_person_id": "uuid-of-related-person",
+      "relationship_type": "spouse",
+      "relationship_type_options": ["spouse", "child", "parent", "sibling", "colleague", "supervisor", "patient", "caregiver", "provider"],
+      "is_primary": true,
+      "notes": "Emergency contact"
+    }
+  ],
+  
+  "emergency_contact": {
+    "name": "jane doe",
+    "phone": "+256700999888",
+    "relationship": "spouse"
+  },
+  
+  "is_active": true,
+  "created_at": "2025-01-15T10:30:00Z",
+  "created_by": "staff-uuid",
+  "updated_at": "2025-01-15T14:20:00Z",
+  "updated_by": "staff-uuid",
+  "is_deleted": false,
+  
+  "metadata": {
+    "source": "kobo",
+    "source_options": ["kobo", "manual", "api", "import"],
+    "version": "1.0",
+    "import_id": null
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "_description": "Treatment Model - ANY intervention (medications, procedures, counseling, education, equipment)",
+  "_version": "1.0",
+  "_date_created": "2025-01-15",
+  
+  "treatment_id": "uuid-unique-identifier",
+  "patient_id": "uuid-foreign-key-to-person",
+  "encounter_id": "uuid-foreign-key-to-encounter",
+  
+  "treatment_type": "medication",
+  "_treatment_type_options": [
+    "medication",
+    "procedure",
+    "counseling",
+    "education",
+    "equipment_provision",
+    "wound_care",
+    "physical_therapy",
+    "occupational_therapy",
+    "spiritual_care",
+    "nutrition_support",
+    "referral"
+  ],
+  
+  "treatment_name": "morphine sulfate 10mg oral tablets",
+  "treatment_category": "pain_management",
+  "_treatment_category_options": [
+    "pain_management",
+    "symptom_control",
+    "infection_treatment",
+    "nutrition",
+    "psychosocial_support",
+    "palliative_care",
+    "curative_intent",
+    "preventive"
+  ],
+  
+  "details": {
+    "_description": "FLEXIBLE - changes based on treatment_type",
+    
+    "_if_medication": {
+      "generic_name": "morphine",
+      "brand_name": "MS Contin",
+      "dosage": "10mg",
+      "frequency": "every_4_hours",
+      "_frequency_options": ["once_daily", "twice_daily", "three_times_daily", "four_times_daily", "every_4_hours", "every_6_hours", "every_8_hours", "as_needed_prn"],
+      "route": "oral",
+      "_route_options": ["oral", "sublingual", "rectal", "subcutaneous", "intravenous", "intramuscular", "topical", "transdermal"],
+      "form": "tablet",
+      "_form_options": ["tablet", "capsule", "liquid", "injection", "cream", "patch", "suppository"],
+      "quantity_prescribed": 120,
+      "quantity_unit": "tablets",
+      "refills_allowed": 2,
+      "days_supply": 10,
+      "special_instructions": "take with food, may cause drowsiness",
+      "is_controlled_substance": true,
+      "dea_schedule": "schedule_2"
+    },
+    
+    "_if_procedure": {
+      "procedure_name": "wound_dressing_change",
+      "procedure_code": "PROC-001",
+      "site": "sacral_area",
+      "technique": "clean wound with normal saline, apply honey dressing, cover with gauze",
+      "anesthesia_used": false,
+      "complications": "none",
+      "outcome": "wound_improving",
+      "supplies_used": ["normal_saline", "honey_dressing", "gauze", "tape"]
+    },
+    
+    "_if_counseling": {
+      "counseling_type": "grief_counseling",
+      "_counseling_type_options": ["grief", "anticipatory_grief", "spiritual", "family", "caregiver_support", "end_of_life_planning"],
+      "duration_minutes": 60,
+      "participants": ["patient", "spouse"],
+      "topics_discussed": ["coping_with_illness", "advance_directives", "family_concerns"],
+      "techniques_used": ["active_listening", "cognitive_reframing"],
+      "patient_response": "engaged, tearful at times, asking appropriate questions",
+      "follow_up_needed": true,
+      "follow_up_plan": "continue weekly sessions"
+    },
+    
+    "_if_education": {
+      "education_topic": "medication_administration",
+      "topics_covered": ["how_to_give_morphine", "side_effects", "when_to_seek_help"],
+      "teaching_methods": ["demonstration", "teach_back", "written_materials"],
+      "materials_provided": ["medication_guide", "symptom_diary"],
+      "learner": "primary_caregiver",
+      "learner_understanding": "good",
+      "_understanding_options": ["excellent", "good", "fair", "poor", "needs_reinforcement"],
+      "barriers_to_learning": "none",
+      "follow_up_education_needed": false
+    },
+    
+    "_if_equipment": {
+      "equipment_type": "wheelchair",
+      "_equipment_type_options": ["wheelchair", "walker", "cane", "commode", "oxygen_concentrator", "hospital_bed", "pressure_mattress"],
+      "equipment_id": "WC-2024-001",
+      "brand": "Invacare",
+      "serial_number": "12345678",
+      "condition": "good",
+      "training_provided": true,
+      "caregiver_competence": "good",
+      "return_expected": true,
+      "expected_return_date": "2025-03-15"
+    },
+    
+    "_if_referral": {
+      "referred_to": "pain_specialist",
+      "facility": "mulago_hospital_kampala",
+      "referral_reason": "complex_pain_management",
+      "urgency": "routine",
+      "_urgency_options": ["routine", "urgent", "emergency"],
+      "referral_sent_date": "2025-01-15",
+      "appointment_date": "2025-01-25",
+      "appointment_time": "09:00:00",
+      "referral_letter_provided": true,
+      "transport_arranged": true,
+      "patient_accepted_referral": true
+    }
+  },
+  
+  "start_date": "2025-01-15",
+  "start_time": "10:30:00",
+  "end_date": null,
+  "end_time": null,
+  "duration": null,
+  "_duration_note": "For ongoing treatments, end_date is null. For completed/discontinued, populate end_date",
+  
+  "indication": "severe cancer pain",
+  "clinical_rationale": "patient pain scale 8/10, inadequately controlled on paracetamol alone",
+  
+  "prescribed_by": "staff-uuid",
+  "prescribed_date": "2025-01-15",
+  "administered_by": "staff-uuid",
+  "administered_date": "2025-01-15",
+  "supervised_by": "staff-uuid-supervisor",
+  
+  "status": "active",
+  "_status_options": ["ordered", "active", "completed", "discontinued", "on_hold", "cancelled"],
+  
+  "discontinuation_reason": null,
+  "_discontinuation_reason_options": ["side_effects", "ineffective", "no_longer_needed", "patient_request", "death", "transferred_care", "allergy"],
+  "discontinuation_date": null,
+  "discontinued_by": null,
+  
+  "response": {
+    "effectiveness": "good",
+    "_effectiveness_options": ["poor", "fair", "good", "excellent"],
+    "side_effects": ["constipation", "drowsiness"],
+    "adverse_events": [],
+    "patient_tolerance": "good",
+    "adherence": "good",
+    "_adherence_options": ["excellent", "good", "fair", "poor", "non_adherent"],
+    "notes": "patient reports pain decreased from 8/10 to 5/10 within 2 hours of first dose"
+  },
+  
+  "monitoring": {
+    "parameters_to_monitor": ["pain_level", "bowel_function", "sedation"],
+    "monitoring_frequency": "daily",
+    "last_monitored_date": "2025-01-16",
+    "next_monitoring_due": "2025-01-17"
+  },
+  
+  "cost": {
+    "cost_ugx": 50000,
+    "payment_source": "hospice",
+    "_payment_source_options": ["hospice", "patient", "insurance", "donor", "government"],
+    "billed_to": null
+  },
+  
+  "related_treatments": [
+    {
+      "treatment_id": "uuid-senna-laxative",
+      "relationship": "prophylaxis_for_side_effect",
+      "note": "senna prescribed to prevent morphine-induced constipation"
+    }
+  ],
+  
+  "created_at": "2025-01-15T10:30:00Z",
+  "created_by": "staff-uuid",
+  "updated_at": "2025-01-15T14:20:00Z",
+  "updated_by": "staff-uuid",
+  "is_deleted": false,
+  
+  "metadata": {
+    "source": "encounter",
+    "version": "1.0",
+    "inventory_deducted": true,
+    "inventory_transaction_id": "uuid-inventory-txn"
+  }
+}
